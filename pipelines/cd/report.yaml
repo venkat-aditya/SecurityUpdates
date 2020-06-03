@@ -1,0 +1,141 @@
+trigger: none
+pr: none
+pool:
+  vmImage: ubuntu-latest
+variables:
+  locationName: centralus
+stages:
+  - stage: kyleDev
+    displayName: Kyle dev
+    variables:
+      serenityEnvironment: kyleDev
+      kubernetesVersion: 1.16.7
+      azureServiceConnectionName: 3M-CRSLAD16-BBIoTP-Dev
+    jobs:
+      - job: job
+        steps:
+          - template: ../templates/steps-report-versions.yaml
+            parameters:
+              kubernetesVersion: $(kubernetesVersion)
+              azureServiceConnectionName: $(azureServiceConnectionName)
+              serenityEnvironment: $(serenityEnvironment)
+
+  - stage: crslDev
+    displayName: CRSL dev
+    variables:
+      serenityEnvironment: crslDev
+      kubernetesVersion: 1.16.7
+      azureServiceConnectionName: 3M-CRSLAD16-BBIoTP-Dev
+    jobs:
+      - job: job
+        steps:
+          - template: ../templates/steps-report-versions.yaml
+            parameters:
+              kubernetesVersion: $(kubernetesVersion)
+              azureServiceConnectionName: $(azureServiceConnectionName)
+              serenityEnvironment: $(serenityEnvironment)
+
+  - stage: crslQa
+    displayName: CRSL QA
+    variables:
+      serenityEnvironment: crslQa
+      kubernetesVersion: 1.15.7
+      azureServiceConnectionName: 3M-CRSLAD17-BBIoTP-QA
+    jobs:
+      - job: job
+        steps:
+          - template: ../templates/steps-report-versions.yaml
+            parameters:
+              kubernetesVersion: $(kubernetesVersion)
+              azureServiceConnectionName: $(azureServiceConnectionName)
+              serenityEnvironment: $(serenityEnvironment)
+
+  - stage: crslWkbnch
+    displayName: CRSL workbench
+    variables:
+      serenityEnvironment: crslWkbnch
+      kubernetesVersion: 1.15.7
+      azureServiceConnectionName: 3M-CRSLAD19-BBIoTP-Prod
+    jobs:
+      - job: job
+        steps:
+          - template: ../templates/steps-report-versions.yaml
+            parameters:
+              kubernetesVersion: $(kubernetesVersion)
+              azureServiceConnectionName: $(azureServiceConnectionName)
+              serenityEnvironment: $(serenityEnvironment)
+
+  - stage: chimDev
+    displayName: CHIM dev
+    variables:
+      serenityEnvironment: chimDev
+      kubernetesVersion: 1.15.7
+      azureServiceConnectionName: 3M-ACTAIR01-CHIMSMART-Dev
+    jobs:
+      - job: job
+        steps:
+          - template: ../templates/steps-report-versions.yaml
+            parameters:
+              kubernetesVersion: $(kubernetesVersion)
+              azureServiceConnectionName: $(azureServiceConnectionName)
+              serenityEnvironment: $(serenityEnvironment)
+
+  - stage: chimQa
+    displayName: CHIM QA
+    variables:
+      serenityEnvironment: chimQa
+      kubernetesVersion: 1.15.7
+      azureServiceConnectionName: 3M-ACTAIR02-CHIMSMART-QA
+    jobs:
+      - job: job
+        steps:
+          - template: ../templates/steps-report-versions.yaml
+            parameters:
+              kubernetesVersion: $(kubernetesVersion)
+              azureServiceConnectionName: $(azureServiceConnectionName)
+              serenityEnvironment: $(serenityEnvironment)
+
+  - stage: chimProd
+    displayName: CHIM prod
+    variables:
+      serenityEnvironment: chimProd
+      kubernetesVersion: 1.15.7
+      azureServiceConnectionName: 3M-ACTAIR04-CHIMSMART-Prod
+    jobs:
+      - job: job
+        steps:
+          - template: ../templates/steps-report-versions.yaml
+            parameters:
+              kubernetesVersion: $(kubernetesVersion)
+              azureServiceConnectionName: $(azureServiceConnectionName)
+              serenityEnvironment: $(serenityEnvironment)
+
+  - stage: psdDev
+    displayName: PSD dev
+    variables:
+      serenityEnvironment: psdDev
+      kubernetesVersion: 1.15.7
+      azureServiceConnectionName: 3M-PSD-Dev
+    jobs:
+      - job: job
+        steps:
+          - template: ../templates/steps-report-versions.yaml
+            parameters:
+              kubernetesVersion: $(kubernetesVersion)
+              azureServiceConnectionName: $(azureServiceConnectionName)
+              serenityEnvironment: $(serenityEnvironment)
+
+  - stage: emdDev
+    displayName: EMD dev
+    variables:
+      serenityEnvironment: emdDev
+      kubernetesVersion: 1.15.7
+      azureServiceConnectionName: 3M-UDAH02-SpartanIotHub-Dev
+    jobs:
+      - job: job
+        steps:
+          - template: ../templates/steps-report-versions.yaml
+            parameters:
+              kubernetesVersion: $(kubernetesVersion)
+              azureServiceConnectionName: $(azureServiceConnectionName)
+              serenityEnvironment: $(serenityEnvironment)

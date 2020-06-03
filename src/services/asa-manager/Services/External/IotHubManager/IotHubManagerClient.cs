@@ -1,0 +1,39 @@
+// <copyright file="IotHubManagerClient.cs" company="3M">
+// Copyright (c) 3M. All rights reserved.
+// </copyright>
+
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Mmm.Iot.AsaManager.Services.Models.DeviceGroups;
+using Mmm.Iot.Common.Services.Config;
+using Mmm.Iot.Common.Services.Exceptions;
+using Mmm.Iot.Common.Services.External;
+using Mmm.Iot.Common.Services.Helpers;
+using Newtonsoft.Json;
+
+namespace Mmm.Iot.AsaManager.Services.External.IotHubManager
+{
+    public class IotHubManagerClient : ExternalServiceClient, IIotHubManagerClient
+    {
+        public IotHubManagerClient(AppConfig config, IExternalRequestHelper requestHelper)
+            : base(config.ExternalDependencies.IotHubManagerServiceUrl, requestHelper)
+        {
+        }
+
+        public async Task<DeviceListModel> GetListAsync(IEnumerable<DeviceGroupConditionModel> conditions, string tenantId)
+        {
+            try
+            {
+                var query = JsonConvert.SerializeObject(conditions);
+                var url = $"{this.ServiceUri}/devices?query={query}";
+                return await this.RequestHelper.ProcessRequestAsync<DeviceListModel>(HttpMethod.Get, url, tenantId);
+            }
+            catch (Exception e)
+            {
+                throw new ExternalDependencyException("Unable to get list of devices", e);
+            }
+        }
+    }
+}

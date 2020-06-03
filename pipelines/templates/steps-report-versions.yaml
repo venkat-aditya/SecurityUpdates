@@ -1,0 +1,26 @@
+parameters:
+  kubernetesVersion:
+  azureServiceConnectionName:
+  serenityEnvironment:
+
+steps:
+  - checkout: self
+    displayName: Checkout repository
+    persistCredentials: true
+
+  - task: KubectlInstaller@0
+    displayName: Install kubectl
+    inputs:
+      kubectlVersion: ${{parameters.kubernetesVersion}}
+
+  - task: AzureCLI@2
+    displayName: Generate report
+    inputs:
+      azureSubscription: ${{parameters.azureServiceConnectionName}}
+      scriptType: pscore
+      scriptPath: pipelines/cd/report.ps1
+      arguments: -SerenityEnvironment ${{parameters.serenityEnvironment}}
+
+  - publish: $(System.DefaultWorkingDirectory)/reports/${{parameters.serenityEnvironment}}.html
+    artifact: Version report for ${{parameters.serenityEnvironment}}
+    displayName: Publish report

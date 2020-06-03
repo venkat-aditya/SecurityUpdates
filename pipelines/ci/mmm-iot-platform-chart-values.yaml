@@ -1,0 +1,81 @@
+imageTag: &imageTag replace_this_imageTag
+appVersion: &appVersion replace_this_appVersion
+asa-manager:
+  nameOverride: asa-manager
+  appVersion: *appVersion
+  deployment:
+    image:
+      tag: *imageTag
+config:
+  nameOverride: config
+  appVersion: *appVersion
+  deployment:
+    image:
+      tag: *imageTag
+device-telemetry:
+  nameOverride: device-telemetry
+  appVersion: *appVersion
+  deployment:
+    image:
+      tag: *imageTag
+diagnostics:
+  nameOverride: diagnostics
+  appVersion: *appVersion
+  deployment:
+    image:
+      tag: *imageTag
+identity-gateway:
+  nameOverride: identity-gateway
+  appVersion: *appVersion
+  deployment:
+    image:
+      tag: *imageTag
+iothub-manager:
+  nameOverride: iothub-manager
+  appVersion: *appVersion
+  deployment:
+    image:
+      tag: *imageTag
+reverse-proxy:
+  nameOverride: reverse-proxy
+  appVersion: *appVersion
+  service:
+    port: 10080
+  deployment:
+    image:
+      tag: *imageTag
+    port:
+      http: 10080
+    probes:
+      enabled: false
+storage-adapter:
+  nameOverride: storage-adapter
+  appVersion: *appVersion
+  deployment:
+    image:
+      tag: *imageTag
+tenant-manager:
+  nameOverride: tenant-manager
+  appVersion: *appVersion
+  deployment:
+    image:
+      tag: *imageTag
+webui:
+  nameOverride: webui
+  appVersion: *appVersion
+  service:
+    port: 10080
+  deployment:
+    image:
+      tag: *imageTag
+    port:
+      http: 10080
+    probes:
+      enabled: false
+nginx-ingress:
+  controller:
+    nodeSelector:
+      beta.kubernetes.io/os: linux
+  defaultBackend:
+    nodeSelector:
+      beta.kubernetes.io/os: linux

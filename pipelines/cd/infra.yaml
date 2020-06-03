@@ -1,0 +1,279 @@
+trigger: none
+pr: none
+pool:
+  vmImage: ubuntu-latest
+variables:
+  locationName: centralus
+stages:
+  - stage: crslDev
+    displayName: CRSL dev
+    dependsOn: []
+    condition: eq(variables['runCrslDevStage'], 'true')
+    jobs:
+      - template: ../templates/jobs-deploy-infra.yaml
+        parameters:
+          subscriptionName: 3M-CRSLAD16-BBIoTP-DEV
+          locationName: $(locationName)
+          environmentName: IoT_CRSL_Environment_Dev
+          subscriptionId: c36fb2f8-f98d-40d0-90a9-d65e93acb428
+          applicationCode: crsliot
+          applicationShortCode: crsl
+          environmentCategory: dev
+          kubernetesVersion: 1.17.5
+          sendgridEmail: aschmidt4@mmm.com
+          sysAdmins: '[{UserId: 3e30f301-4f57-4b3e-949a-3ff8e93870b5,Name: Viswanath Kotha CW}, 
+                       {UserId: 00e4068a-944e-4cd2-bc2a-77b1d33a1db3,Name: Jonathan Asbury}, 
+                       {UserId: 295af21b-90af-4777-b0ba-4d7f94514679,Name: Sean Dubiel}, 
+                       {UserId: 534a9d20-04aa-4f42-9cf9-d82fca6cf7df,Name: Ragavender Basangari CW},
+                       {UserId: 184adb8e-d6d9-4d07-baf8-ef1b3d3c7e60,Name: achoudhari.cw@mmm.com},
+                       {UserId: 7b78be0d-1ef8-43bd-9772-3d9fb1e7f3be,Name: ngawryk@mmm.com},
+                       {UserId: 9f8df5ac-6312-4245-be6d-ff6bb70ac1e1,Name: Jayasimha Nallagatla CW},
+                       {UserId: b3bbea27-2e63-4f95-8197-e9869af64b14,Name: Sahithi Voruganti CW},
+                       {UserId: ec9745fa-9fa9-4d35-ab55-1e3bd064c4a2,Name: Andrew Schmidt},
+                       {UserId: f6a7ba19-0f66-4cc6-9d15-2241f40fc122,Name: Joseph Bethke},
+                       {UserId: c8efa307-f285-4fb2-91ae-5d4061d2b271,Name: Jonathan Asbury CW},
+                       {UserId: 89247154-ecdf-4d43-8b6c-bfcc0eae8850,Name: Kyle Estes CW}]'
+
+
+  - stage: crslQa
+    displayName: CRSL QA
+    dependsOn:
+      - crslDev
+    jobs:
+      - template: ../templates/jobs-deploy-infra.yaml
+        parameters:
+          subscriptionName: 3M-CRSLAD17-BBIoTP-QA
+          locationName: $(locationName)
+          environmentName: IoT_CRSL_Environment_QA
+          subscriptionId: f27c7c03-1ea8-49b8-9878-106e434b8a23
+          applicationCode: crsliot
+          applicationShortCode: crsl
+          environmentCategory: qa
+          kubernetesVersion: 1.16.8
+          sendgridEmail: aschmidt4@mmm.com
+          sysAdmins: '[{UserId: 3e30f301-4f57-4b3e-949a-3ff8e93870b5,Name: Viswanath Kotha CW}, 
+                       {UserId: 00e4068a-944e-4cd2-bc2a-77b1d33a1db3,Name: Jonathan Asbury}, 
+                       {UserId: 295af21b-90af-4777-b0ba-4d7f94514679,Name: Sean Dubiel}, 
+                       {UserId: 534a9d20-04aa-4f42-9cf9-d82fca6cf7df,Name: Ragavender Basangari CW},
+                       {UserId: 184adb8e-d6d9-4d07-baf8-ef1b3d3c7e60,Name: achoudhari.cw@mmm.com},
+                       {UserId: 7b78be0d-1ef8-43bd-9772-3d9fb1e7f3be,Name: ngawryk@mmm.com},
+                       {UserId: 9f8df5ac-6312-4245-be6d-ff6bb70ac1e1,Name: Jayasimha Nallagatla CW},
+                       {UserId: b3bbea27-2e63-4f95-8197-e9869af64b14,Name: Sahithi Voruganti CW},
+                       {UserId: ec9745fa-9fa9-4d35-ab55-1e3bd064c4a2,Name: Andrew Schmidt},
+                       {UserId: f6a7ba19-0f66-4cc6-9d15-2241f40fc122,Name: Joseph Bethke},
+                       {UserId: c8efa307-f285-4fb2-91ae-5d4061d2b271,Name: Jonathan Asbury CW}
+                       {UserId: 89247154-ecdf-4d43-8b6c-bfcc0eae8850,Name: Kyle Estes CW}]'
+  - stage: crslWkbnch
+    displayName: CRSL workbench
+    dependsOn:
+      - crslQa
+    jobs:
+      - template: ../templates/jobs-deploy-infra.yaml
+        parameters:
+          subscriptionName: 3M-CRSLAD19-BBIoTP-Prod
+          locationName: $(locationName)
+          environmentName: IoT_CRSL_Environment_WKBNCH
+          subscriptionId: dcb37438-95ca-4a68-812d-39ce0d591df2
+          applicationCode: crsliot
+          applicationShortCode: crsl
+          environmentCategory: wkbnch
+          kubernetesVersion: 1.16.8
+          sendgridEmail: aschmidt4@mmm.com
+
+  - stage: chimDev
+    displayName: CHIM dev
+    dependsOn:
+      - crslWkbnch
+    jobs:
+      - template: ../templates/jobs-deploy-infra.yaml
+        parameters:
+          subscriptionName: 3M-ACTAIR01-CHIMSMART-Dev
+          locationName: $(locationName)
+          environmentName: IoT_CHIM_Environment_DEV
+          subscriptionId: 28299656-8110-4dc4-a33f-82a6cc3d05c2
+          applicationCode: chimiot
+          applicationShortCode: chim
+          environmentCategory: dev
+          kubernetesVersion: 1.16.8
+          sendgridEmail: blinzie@mmm.com
+
+  - stage: chimQa
+    displayName: CHIM QA
+    dependsOn:
+      - chimDev
+    jobs:
+      - template: ../templates/jobs-deploy-infra.yaml
+        parameters:
+          subscriptionName: 3M-ACTAIR02-CHIMSMART-QA
+          locationName: $(locationName)
+          environmentName: IoT_CHIM_Environment_QA
+          subscriptionId: 30975220-85e1-4769-8bc1-4542ec8569a0
+          applicationCode: chimiot
+          applicationShortCode: chim
+          environmentCategory: qa
+          kubernetesVersion: 1.16.8
+          sendgridEmail: blinzie@mmm.com
+
+  - stage: chimProd
+    displayName: CHIM prod
+    dependsOn:
+      - chimQa
+    jobs:
+      - template: ../templates/jobs-deploy-infra.yaml
+        parameters:
+          subscriptionName: 3M-ACTAIR04-CHIMSMART-PROD
+          locationName: $(locationName)
+          environmentName: IoT_CHIM_Environment_Prod
+          subscriptionId: 5401dcf9-9d00-445b-97b4-60b216ea4930
+          applicationCode: chimiot
+          applicationShortCode: chim
+          environmentCategory: prod
+          kubernetesVersion: 1.16.8
+          sendgridEmail: blinzie@mmm.com
+
+  - stage: psdDev
+    displayName: PSD dev
+    dependsOn:
+      - crslWkbnch
+    jobs:
+      - template: ../templates/jobs-deploy-infra.yaml
+        parameters:
+          subscriptionName: 3M-ASDT04-PSD-CS-IOT-Dev
+          locationName: $(locationName)
+          subscriptionId: 1d0a4e20-e44d-43b5-97b0-9b577f5bf048
+          applicationCode: psdiot
+          applicationShortCode: psd
+          environmentCategory: dev
+          environmentName: IoT_PSD_Environment_DEV
+          kubernetesVersion: 1.16.8
+          sendgridEmail: lluppes@mmm.com
+          sysAdmins: '[{UserId: 3e30f301-4f57-4b3e-949a-3ff8e93870b5,Name: Viswanath Kotha CW}, 
+                       {UserId: 00e4068a-944e-4cd2-bc2a-77b1d33a1db3,Name: Jonathan Asbury}, 
+                       {UserId: 295af21b-90af-4777-b0ba-4d7f94514679,Name: Sean Dubiel}, 
+                       {UserId: 534a9d20-04aa-4f42-9cf9-d82fca6cf7df,Name: Ragavender Basangari CW},
+                       {UserId: 184adb8e-d6d9-4d07-baf8-ef1b3d3c7e60,Name: achoudhari.cw@mmm.com},
+                       {UserId: 7b78be0d-1ef8-43bd-9772-3d9fb1e7f3be,Name: ngawryk@mmm.com},
+                       {UserId: 9f8df5ac-6312-4245-be6d-ff6bb70ac1e1,Name: Jayasimha Nallagatla CW},
+                       {UserId: b3bbea27-2e63-4f95-8197-e9869af64b14,Name: Sahithi Voruganti CW},
+                       {UserId: ec9745fa-9fa9-4d35-ab55-1e3bd064c4a2,Name: Andrew Schmidt},
+                       {UserId: f6a7ba19-0f66-4cc6-9d15-2241f40fc122,Name: Joseph Bethke},
+                       {UserId: c8efa307-f285-4fb2-91ae-5d4061d2b271,Name: Jonathan Asbury CW},
+                       {UserId: 89247154-ecdf-4d43-8b6c-bfcc0eae8850,Name: Kyle Estes CW},
+                       {UserId: e12e876e-df06-47e8-a87d-076775562838,Name: Jeffrey Rasmussen},
+                       {UserId: 7cd9667d-7878-44bb-8fa2-87fba7d8508c,Name: Lyle Luppes},
+                       {UserId: 72bb297a-ce0c-4e43-bd7e-9867d479b215,Name: Shane Hainey},
+                       {UserId: 6e050511-ea6c-4659-b5f8-25ba83607969,Name: Bala Chandran CW},
+                       {UserId: 49dda3c0-274b-4746-a8b3-fe7cd0c252cf,Name: Eric Lobner },
+                       {UserId: f8b35420-6ee3-4d4d-a757-e7ffe4f4f791,Name: Brad Murray}]'
+
+  - stage: psdQa
+    displayName: PSD QA
+    dependsOn:
+      - psdDev
+    jobs:
+      - template: ../templates/jobs-deploy-infra.yaml
+        parameters:
+          subscriptionName: 3M-ASDT05-PSD-CS-IOT-QA
+          locationName: $(locationName)
+          subscriptionId: 8c550fc0-24e0-43cb-8237-5fbb168c1071
+          applicationCode: psdiot
+          applicationShortCode: psd
+          environmentCategory: qa
+          environmentName: IoT_PSD_Environment_QA
+          kubernetesVersion: 1.16.8
+          sendgridEmail: lluppes@mmm.com
+          sysAdmins: '[{UserId: 00e4068a-944e-4cd2-bc2a-77b1d33a1db3,Name: Jonathan Asbury}, 
+                       {UserId: 295af21b-90af-4777-b0ba-4d7f94514679,Name: Sean Dubiel}, 
+                       {UserId: 534a9d20-04aa-4f42-9cf9-d82fca6cf7df,Name: Ragavender Basangari CW},
+                       {UserId: 9f8df5ac-6312-4245-be6d-ff6bb70ac1e1,Name: Jayasimha Nallagatla CW},
+                       {UserId: c8efa307-f285-4fb2-91ae-5d4061d2b271,Name: Jonathan Asbury CW},
+                       {UserId: e12e876e-df06-47e8-a87d-076775562838,Name: Jeffrey Rasmussen},
+                       {UserId: 7cd9667d-7878-44bb-8fa2-87fba7d8508c,Name: Lyle Luppes},
+                       {UserId: 72bb297a-ce0c-4e43-bd7e-9867d479b215,Name: Shane Hainey},
+                       {UserId: 49dda3c0-274b-4746-a8b3-fe7cd0c252cf,Name: Eric Lobner },
+                       {UserId: f8b35420-6ee3-4d4d-a757-e7ffe4f4f791,Name: Brad Murray}]'
+
+  - stage: psdEu
+    displayName: PSD EU
+    dependsOn:
+      - psdDev
+    jobs:
+      - template: ../templates/jobs-deploy-infra.yaml
+        parameters:
+          subscriptionName: 3M-ASDT05-PSD-CS-IOT-QA
+          locationName: $(locationName)
+          subscriptionId: 8c550fc0-24e0-43cb-8237-5fbb168c1071
+          applicationCode: psdiot
+          applicationShortCode: psd
+          environmentCategory: eu
+          environmentName: IoT_PSD_Environment_EU
+          kubernetesVersion: 1.16.8
+          sendgridEmail: lluppes@mmm.com
+
+  - stage: psdStg
+    displayName: PSD Stg
+    dependsOn:
+      - psdDev
+    jobs:
+      - template: ../templates/jobs-deploy-infra.yaml
+        parameters:
+          subscriptionName: 3M-ASDT05-PSD-CS-IOT-QA
+          locationName: $(locationName)
+          subscriptionId: 8c550fc0-24e0-43cb-8237-5fbb168c1071
+          applicationCode: psdiot
+          applicationShortCode: psd
+          environmentCategory: stg
+          environmentName: IoT_PSD_Environment_STG
+          kubernetesVersion: 1.16.8
+          sendgridEmail: lluppes@mmm.com
+
+  - stage: emdDev
+    displayName: EMD dev
+    dependsOn:
+      - crslWkbnch
+    jobs:
+      - template: ../templates/jobs-deploy-infra.yaml
+        parameters:
+          subscriptionName: 3M-UDAH02-SpartanIotHub-Dev
+          locationName: $(locationName)
+          subscriptionId: 191495e8-b878-4140-85eb-aae73a7119cd
+          applicationCode: emdiot
+          applicationShortCode: emd
+          environmentCategory: dev
+          environmentName: IoT_EMD_Environment_DEV
+          kubernetesVersion: 1.16.8
+          sendgridEmail: cfinn@mmm.com
+
+  - stage: emdQa
+    displayName: EMD QA
+    dependsOn:
+      - emdDev
+    jobs:
+      - template: ../templates/jobs-deploy-infra.yaml
+        parameters:
+          subscriptionName: 3M-UDAH03-SpartanIotHub-QA
+          locationName: $(locationName)
+          subscriptionId: 5248a0ea-c79b-4739-adc7-e76eeb27e253
+          applicationCode: emdiot
+          applicationShortCode: emd
+          environmentCategory: qa
+          environmentName: IoT_EMD_Environment_QA
+          kubernetesVersion: 1.16.8
+          sendgridEmail: cfinn@mmm.com
+
+  - stage: emdCt
+    displayName: EMD CT
+    dependsOn:
+      - emdQa
+    jobs:
+      - template: ../templates/jobs-deploy-infra.yaml
+        parameters:
+          subscriptionName: 3M-UDAH04-SpartanIotHub-CT
+          locationName: $(locationName)
+          subscriptionId: e9f61243-5e9a-4b8a-918c-09fe7e9f1ec1
+          applicationCode: emdiot
+          applicationShortCode: emd
+          environmentCategory: ct
+          environmentName: IoT_EMD_Environment_CT
+          kubernetesVersion: 1.16.8
+          sendgridEmail: cfinn@mmm.com

@@ -1,0 +1,74 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+@import 'src/styles/mixins';
+@import 'src/styles/themes';
+
+.manage-filters-flyout-container{
+  @include rem-font-size(14px);
+  @include rem-fallback(padding-bottom, 16px);
+
+  .borderless { border: none; }
+
+  .edit-device-group-btn {
+    background: none;
+    border: none;
+  }
+
+  .device-grops-grid-container { @include rem-fallback(margin-top, 24px); }
+
+  .add-btn {
+    padding-left: 0;
+    padding-right: 0;
+    @include rem-fallback(margin, 24px, 0px, 24px, 0px);
+  }
+
+  .actions-button { @include rem-fallback(min-width, 110px); }
+
+  .btn-toolbar {
+    justify-content: flex-end;
+    @include rem-fallback(padding-top, 32px);
+  }
+
+  @include themify($themes) {
+    .property-grid-container .grid-header .cell { color: themed('colorContentTextDim'); }
+
+    color: themed('colorContentTextDim');
+
+    .device-group-delete-header { color: themed('colorContentText'); }
+
+    .device-group-delete-error {
+      border-color: themed('colorAlert');
+    }
+
+    .summary-icon svg { fill: themed('colorContentText'); }
+  }
+
+  .device-group-delete-header { @include rem-fallback(padding, 12px, 0px); }
+
+  .toggle-btn-div { @include rem-fallback(margin, 12px, 0px); }
+
+  .device-group-delete-error {
+    border: 1px transparent solid;
+    @include rem-fallback(margin, 12px, 0px);
+    @include rem-fallback(padding, 16px);
+  }
+
+  .wait-indicator { @include rem-fallback(margin-left, 8px); }
+
+  .summary-icon svg {
+    @include square-px-rem(16px);
+    @include rem-fallback(margin-left, 8px);
+  }
+
+  @include themify($themes) {
+    color: themed('colorContentTextDim');
+
+    .device-group-delete-header { color: themed('colorContentText'); }
+
+    .device-group-delete-error {
+      border-color: themed('colorAlert');
+    }
+
+    .summary-icon svg { fill: themed('colorContentText'); }
+  }
+}

@@ -1,0 +1,242 @@
+trigger: none
+pr: none
+resources:
+  pipelines:
+    - pipeline: test
+      source: azure-iot-services-dotnet.ci.test
+      trigger:
+        branches:
+          - master
+pool:
+  vmImage: ubuntu-latest
+variables:
+  _imageTag: $[coalesce(variables.resources.pipeline.test.runID, variables.imageTag)]
+stages:
+  - stage: checkParameters
+    displayName: Check parameters
+    dependsOn: []
+    jobs:
+      - job: checkParameters
+        displayName: Check parameters
+        steps:
+          - checkout: none
+
+          - script: |-
+              set -Eeuxo pipefail
+              echo "Image tag: '$(_imageTag)'"
+              if [ -z "$(_imageTag)" ]
+              then
+                echo "A value for the 'imageTag' variable must be provided" > /dev/stderr
+                exit 1
+              fi
+            displayName: Check parameters
+
+  - stage: printPipelineResourceVariables
+    displayName: Print pipeline resource variables
+    dependsOn: []
+    jobs:
+      - job: printPipelineResourceVariables
+        displayName: Print pipeline resource variables
+        steps:
+          - checkout: none
+
+          - template: ../templates/print-pipeline-resource-variables.yaml
+            parameters:
+              pipelineResourceName: test
+
+  - stage: crslDev
+    displayName: CRSL dev
+    dependsOn:
+      - checkParameters
+    condition: eq(variables['runCrslDevStage'], 'true')
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: IoT_CRSL_Environment_Dev
+          subscriptionName: 3M-CRSLAD16-BBIoTP-DEV
+          applicationCode: crsliot
+          applicationShortCode: crsl
+          environmentCategory: dev
+          imageTag: $(_imageTag)
+
+  - stage: ggkDev
+    displayName: GGK dev
+    dependsOn:
+      - checkParameters
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: GGK-Environment
+          subscriptionName: 3M-CRSLAD16-BBIoTP-DEV
+          applicationCode: ggktech
+          applicationShortCode: ggk
+          environmentCategory: dev
+          imageTag: $(_imageTag)
+
+  - stage: crslQa
+    displayName: CRSL QA
+    dependsOn:
+      - crslDev
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: IoT_CRSL_Environment_QA
+          subscriptionName: 3M-CRSLAD17-BBIoTP-QA
+          applicationCode: crsliot
+          applicationShortCode: crsl
+          environmentCategory: qa
+          imageTag: $(_imageTag)
+
+  - stage: crslWkbnch
+    displayName: CRSL workbench
+    dependsOn:
+      - crslQa
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: IoT_CRSL_Environment_WKBNCH
+          subscriptionName: 3M-CRSLAD19-BBIoTP-Prod
+          applicationCode: crsliot
+          applicationShortCode: crsl
+          environmentCategory: wkbnch
+          imageTag: $(_imageTag)
+
+  - stage: chimDev
+    displayName: CHIM dev
+    dependsOn:
+      - crslWkbnch
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: IoT_CHIM_Environment_DEV
+          subscriptionName: 3M-ACTAIR01-CHIMSMART-Dev
+          applicationCode: chimiot
+          applicationShortCode: chim
+          environmentCategory: dev
+          imageTag: $(_imageTag)
+
+  - stage: chimQa
+    displayName: CHIM QA
+    dependsOn:
+      - chimDev
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: IoT_CHIM_Environment_QA
+          subscriptionName: 3M-ACTAIR02-CHIMSMART-QA
+          applicationCode: chimiot
+          applicationShortCode: chim
+          environmentCategory: qa
+          imageTag: $(_imageTag)
+
+  - stage: chimProd
+    displayName: CHIM prod
+    dependsOn:
+      - chimQa
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: IoT_CHIM_Environment_PROD
+          subscriptionName: 3M-ACTAIR04-CHIMSMART-Prod
+          applicationCode: chimiot
+          applicationShortCode: chim
+          environmentCategory: prod
+          imageTag: $(_imageTag)
+
+  - stage: psdDev
+    displayName: PSD dev
+    dependsOn:
+      - crslWkbnch
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: IoT_PSD_Environment_DEV
+          subscriptionName: 3M-ASDT04-PSD-CS-IOT-Dev
+          applicationCode: psdiot
+          applicationShortCode: psd
+          environmentCategory: dev
+          imageTag: $(_imageTag)
+
+  - stage: psdQa
+    displayName: PSD QA
+    dependsOn:
+      - psdDev
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: IoT_PSD_Environment_QA
+          subscriptionName: 3M-ASDT05-PSD-CS-IOT-QA
+          applicationCode: psdiot
+          applicationShortCode: psd
+          environmentCategory:  qa
+          imageTag: $(_imageTag)
+
+  - stage: psdEu
+    displayName: PSD EU
+    dependsOn:
+      - psdDev
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: IoT_PSD_Environment_EU
+          subscriptionName: 3M-ASDT05-PSD-CS-IOT-QA
+          applicationCode: psdiot
+          applicationShortCode: psd
+          environmentCategory: eu
+          imageTag: $(_imageTag)
+
+  - stage: psdStg
+    displayName: PSD Stg
+    dependsOn:
+      - psdDev
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: IoT_PSD_Environment_STG
+          subscriptionName: 3M-ASDT05-PSD-CS-IOT-QA
+          applicationCode: psdiot
+          applicationShortCode: psd
+          environmentCategory: stg
+          imageTag: $(_imageTag)
+
+  - stage: emdDev
+    displayName: EMD dev
+    dependsOn:
+      - crslWkbnch
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: IoT_EMD_Environment_DEV
+          subscriptionName: 3M-UDAH02-SpartanIotHub-Dev
+          applicationCode: emdiot
+          applicationShortCode: emd
+          environmentCategory: dev
+          imageTag: $(_imageTag)
+
+  - stage: emdQa
+    displayName: EMD QA
+    dependsOn:
+      - emdDev
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: IoT_EMD_Environment_QA
+          subscriptionName: 3M-UDAH03-SpartanIotHub-QA
+          applicationCode: emdiot
+          applicationShortCode: emd
+          environmentCategory: qa
+          imageTag: $(_imageTag)
+
+  - stage: emdCt
+    displayName: EMD CT
+    dependsOn:
+      - emdQa
+    jobs:
+      - template: ../templates/jobs-deploy-code.yaml
+        parameters:
+          environmentName: IoT_EMD_Environment_CT
+          subscriptionName: 3M-UDAH04-SpartanIotHub-CT
+          applicationCode: emdiot
+          applicationShortCode: emd
+          environmentCategory: ct
+          imageTag: $(_imageTag)
