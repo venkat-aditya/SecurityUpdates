@@ -9,8 +9,8 @@ import { svgs, LinkedComponent } from "utilities";
 import Flyout from "components/shared/flyout";
 import DeviceGroupForm from "./views/deviceGroupForm";
 import DeviceGroups from "./views/deviceGroups";
-
 import "./manageDeviceGroups.scss";
+// CHANGES WILL BE INTRODUCED HERE
 
 const toOption = (value, label) => ({
     label: label || value,
