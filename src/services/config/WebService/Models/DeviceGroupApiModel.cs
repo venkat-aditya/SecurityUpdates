@@ -21,6 +21,8 @@ namespace Mmm.Iot.Config.WebService.Models
             this.Conditions = model.Conditions;
             this.TelemetryFormat = model.TelemetryFormat;
             this.ETag = model.ETag;
+            this.IsPined = model.IsPined;
+            this.SortOrder = model.SortOrder;
 
             this.Metadata = new Dictionary<string, string>
             {
@@ -47,6 +49,12 @@ namespace Mmm.Iot.Config.WebService.Models
         [JsonProperty("$metadata")]
         public Dictionary<string, string> Metadata { get; set; }
 
+        [JsonProperty("IsPined")]
+        public bool IsPined { get; set; }
+
+        [JsonProperty("SortOrder")]
+        public int SortOrder { get; set; }
+
         public DeviceGroup ToServiceModel()
         {
             return new DeviceGroup
@@ -54,6 +62,8 @@ namespace Mmm.Iot.Config.WebService.Models
                 DisplayName = this.DisplayName,
                 Conditions = this.Conditions,
                 TelemetryFormat = this.TelemetryFormat,
+                IsPined = this.IsPined,
+                SortOrder = this.SortOrder,
             };
         }
     }

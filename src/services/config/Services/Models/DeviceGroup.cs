@@ -17,5 +17,9 @@ namespace Mmm.Iot.Config.Services.Models
         public IEnumerable<DeviceGroupTelemetryFormat> TelemetryFormat { get; set; }
 
         public string ETag { get; set; }
+
+        public bool IsPined { get; set; }
+
+        public int SortOrder { get; set; }
     }
 }
