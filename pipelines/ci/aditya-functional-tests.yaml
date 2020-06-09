@@ -624,17 +624,17 @@ stages:
           - checkout: azure-iot-functional-tests
             displayName: Checkout repository
 
-          - task: AzureCLI@2
-            displayName: Wait for webui pod to be ready
-            name: getPipelineVariables
-            inputs:
-              azureSubscription: $(subscriptionName)
-              scriptType: bash
-              scriptLocation: inlineScript
-              inlineScript: |-
-                set -Eeuxo pipefail
-                az aks get-credentials -n $(aksName) -g $(resourceGroupName)
-                kubectl wait pods --for=condition=Ready --selector app.kubernetes.io/name=webui -n $(kubernetesNamespace)
+          # - task: AzureCLI@2
+          #   displayName: Wait for webui pod to be ready
+          #   name: getPipelineVariables
+          #   inputs:
+          #     azureSubscription: $(subscriptionName)
+          #     scriptType: bash
+          #     scriptLocation: inlineScript
+          #     inlineScript: |-
+          #       set -Eeuxo pipefail
+          #       az aks get-credentials -n $(aksName) -g $(resourceGroupName)
+          #       kubectl wait pods --for=condition=Ready --selector app.kubernetes.io/name=webui -n $(kubernetesNamespace)
 
           - task: DotNetCoreCLI@2
             displayName: Run functional tests
