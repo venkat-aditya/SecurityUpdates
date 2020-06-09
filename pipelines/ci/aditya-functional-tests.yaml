@@ -24,7 +24,7 @@ variables:
   - name: serenityVersion
     value: $(serenityMajorVersion).$(serenityMinorVersion).$(serenityPatchVersion)
   - name: buildId
-    value: build-$(Build.BuildId)
+    value: build-60203
   - name: serenityVersionRowKey
     value: serenityVersion
   - name : ggkTestPipelineDomain
