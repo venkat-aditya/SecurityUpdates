@@ -59,7 +59,7 @@ variables:
   - name: tableStoragePartition
     value: test
   - name: tableStorageRowKeyPrefix
-    value: "$(buildId):"
+    value: "build-60203:"
   - name: kubernetesNamespaceWasCreatedRowKey
     value: kubernetesNamespaceWasCreated
   - name: mmmIotPlatformServicesHelmChartWasInstalledRowKey
@@ -611,6 +611,7 @@ stages:
               inlineScript: |-
                 appConfigurationConnectionString=`az storage entity query --filter "PartitionKey eq '$(tableStoragePartition)' and RowKey eq '$(tableStorageRowKeyPrefix)$(tableStorageAppConfigurationConnectionStringRowKey)'" --select Content --query items[].Content --output tsv --table-name $(tableStorageName) --account-name $(storageAccountName)`
                 echo "##vso[task.setvariable variable=appConfigurationConnectionString;isOutput=true]$appConfigurationConnectionString"
+                echo $appConfigurationConnectionstring
 
       - job: functionalTest
         displayName: Functional test
