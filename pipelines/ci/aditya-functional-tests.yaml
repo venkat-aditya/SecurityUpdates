@@ -59,7 +59,7 @@ variables:
   - name: tableStoragePartition
     value: test
   - name: tableStorageRowKeyPrefix
-    value: "build-60204:"
+    value: "build-60203:"
   - name: kubernetesNamespaceWasCreatedRowKey
     value: kubernetesNamespaceWasCreated
   - name: mmmIotPlatformServicesHelmChartWasInstalledRowKey
