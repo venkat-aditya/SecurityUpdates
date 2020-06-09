@@ -28,7 +28,7 @@ variables:
   - name: serenityVersionRowKey
     value: serenityVersion
   - name : ggkTestPipelineDomain
-    value : https://ggktech-aks-dev.centralus.cloudapp.azure.com/
+    value : ggktech-aks-dev.centralus.cloudapp.azure.com/
   - name: serenityVersionWithMetadata
     value: $(serenityVersion)+$(Build.SourceVersion).$(Build.BuildId)
   - name: serenityVersionWithMetadataRowKey
@@ -87,7 +87,7 @@ variables:
   - name: mmmIotPlatformIngressHelmChartReleaseName
     value: ingress-$(buildId)
   - name: serenityDevTenantId
-    value: 087445f1-234f-45a8-8b4b-d8b4685cbd3a
+    value: 2dd8293f-fd49-41bb-bc24-b96024b7892b
   - name: testPipelineDomain
     value: iot.cld.3m.com
   - name: testPipelineFqdn
@@ -591,9 +591,9 @@ stages:
   - stage: functionalTest
     displayName: Functional tests
     dependsOn:
-      - deployIngress
-      - deployServices
-      - addAuthenticationCallbackUrl
+      # - deployIngress
+      # - deployServices
+      # - addAuthenticationCallbackUrl
     jobs:
       - job: getPipelineVariables
         displayName: Get pipeline variables
@@ -617,7 +617,7 @@ stages:
         dependsOn:
           - getPipelineVariables
         variables:
-          SerenityBaseUrl: https://$(testPipelineFqdn)
+          SerenityBaseUrl: https://$(ggkTestPipelineDomain)
           AppConfigurationConnectionString: $[dependencies.getPipelineVariables.outputs['getPipelineVariables.appConfigurationConnectionString']]
           SerenityTenantId: $(serenityDevTenantId)
         steps:
