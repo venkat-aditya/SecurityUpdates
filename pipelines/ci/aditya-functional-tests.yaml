@@ -87,7 +87,7 @@ variables:
   - name: mmmIotPlatformIngressHelmChartReleaseName
     value: ingress-$(buildId)
   - name: serenityDevTenantId
-    value: 2dd8293f-fd49-41bb-bc24-b96024b7892b
+    value: 087445f1-234f-45a8-8b4b-d8b4685cbd3a
   - name: testPipelineDomain
     value: iot.cld.3m.com
   - name: testPipelineFqdn
@@ -617,7 +617,7 @@ stages:
         dependsOn:
           - getPipelineVariables
         variables:
-          SerenityBaseUrl: https://$(ggkTestPipelineDomain)
+          SerenityBaseUrl: https://$(testPipelineFqdn)
           AppConfigurationConnectionString: $[dependencies.getPipelineVariables.outputs['getPipelineVariables.appConfigurationConnectionString']]
           SerenityTenantId: $(serenityDevTenantId)
         steps:
