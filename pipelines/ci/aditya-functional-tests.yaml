@@ -618,7 +618,7 @@ stages:
         dependsOn:
           - getPipelineVariables
         variables:
-          SerenityBaseUrl: https://crsliot-aks-dev.centralus.cloudapp.azure.com/
+          SerenityBaseUrl: https://ggktech-aks-dev.centralus.cloudapp.azure.com/
           AppConfigurationConnectionString: $[dependencies.getPipelineVariables.outputs['getPipelineVariables.appConfigurationConnectionString']]
           SerenityTenantId: $(serenityDevTenantId)
         steps:
