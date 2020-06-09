@@ -39,9 +39,9 @@ variables:
   - name: serenityVersionWithMetadataKubernetesFormatRowKey
     value: serenityVersionWithMetadataKubernetesFormat
   - name: applicationCode
-    value: crsliot
+    value: ggktech
   - name: applicationShortCode
-    value: crsl
+    value: ggk
   - name: environmentCategory
     value: dev
   - name: subscriptionName
@@ -87,7 +87,7 @@ variables:
   - name: mmmIotPlatformIngressHelmChartReleaseName
     value: ingress-$(buildId)
   - name: serenityDevTenantId
-    value: 087445f1-234f-45a8-8b4b-d8b4685cbd3a
+    value: 2dd8293f-fd49-41bb-bc24-b96024b7892b
   - name: testPipelineDomain
     value: iot.cld.3m.com
   - name: testPipelineFqdn
@@ -114,7 +114,7 @@ resources:
       name: MMM/azure-iot-functional-tests
       type: githubenterprise
       endpoint: GithubMMM
-      ref: master
+      ref: aarm8zz-userstory-13544
 stages:
   - stage: build
     displayName: Build
