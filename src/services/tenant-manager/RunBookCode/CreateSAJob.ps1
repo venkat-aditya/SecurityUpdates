@@ -444,74 +444,74 @@ $SAJobQuery = @"
         CombineAlarms as
         (
             SELECT
-                1 as [doc.schemaVersion],
-                'alarm' as [doc.schema],
-                'open' as [status],
-                '1Rule-1Device-NMessage' as [logic],
+                1 as _schemaVersion,
+                'alarm' as _schema,
+                'open' as status,
+                '1Rule-1Device-NMessage' as logic,
                 DATEDIFF(millisecond, '1970-01-01T00:00:00Z', System.Timestamp) as created,
                 DATEDIFF(millisecond, '1970-01-01T00:00:00Z', System.Timestamp) as modified,
-                AA.__description as [rule.description],
-                AA.__severity as [rule.severity],
-                AA.__actions as [rule.actions],
-                AA.__ruleid as [rule.id],
-                AA.__deviceId as [device.id],
+                AA.__description as ruleDescription,
+                AA.__severity as ruleSeverity,
+                AA.__actions as ruleActions,
+                AA.__ruleid as ruleId,
+                AA.__deviceId as deviceId,
                 AA.__aggregates,
-                AA.__lastReceivedTime as [device.msg.received]
+                AA.__lastReceivedTime as deviceMsgReceived,
             FROM
                 ApplyAggregatedRuleFilters AA PARTITION BY PartitionId
         
             UNION
         
             SELECT
-                1 as [doc.schemaVersion],
-                'alarm' as [doc.schema],
-                'open' as [status],
-                '1Rule-1Device-1Message' as [logic],
+                1 as _schemaVersion,
+                'alarm' as _schema,
+                'open' as status,
+                '1Rule-1Device-NMessage' as logic,
                 DATEDIFF(millisecond, '1970-01-01T00:00:00Z', System.Timestamp) as created,
                 DATEDIFF(millisecond, '1970-01-01T00:00:00Z', System.Timestamp) as modified,
-                AI.__description as [rule.description],
-                AI.__severity as [rule.severity],
-                AI.__actions as [rule.actions],
-                AI.__ruleid as [rule.id],
-                AI.__deviceId as [device.id],
+                AI.__description as ruleDescription,
+                AI.__severity as ruleSeverity,
+                AI.__actions as ruleActions,
+                AI.__ruleid as ruleId,
+                AI.__deviceId as deviceId,
                 AI.__aggregates,
-                DATEDIFF(millisecond, '1970-01-01T00:00:00Z', AI.__receivedTime) as [device.msg.received]
+                DATEDIFF(millisecond, '1970-01-01T00:00:00Z', AI.__receivedTime) as deviceMsgReceived,
             FROM
                 ApplyInstantRuleFilters AI PARTITION BY PartitionId
         )
         
         SELECT
-            CA.[doc.schemaVersion] as _schemaVersion,
-            CA.[doc.schema] as _schema,
-            CA.[status] as status,
-            CA.[logic] as logic,
-            CA.[created] as created,
-            CA.[modified] as modified,
-            CA.[rule.description] as ruleDescription,
-            CA.[rule.severity] as ruleSeverity,
-            CA.[rule.id] as ruleId,
-            CA.[device.id] as deviceId,
-            CA.[device.msg.received] as deviceMsgReceived
+            CA._schemaVersion,
+            CA._schema,
+            CA.status,
+            CA.logic,
+            CA.created,
+            CA.modified,
+            CA.ruleDescription,
+            CA.ruleSeverity,
+            CA.ruleId,
+            CA.deviceId,
+            CA.deviceMsgReceived
         INTO
             Alarms
         FROM
             CombineAlarms CA PARTITION BY PartitionId
         
         SELECT
-            CA.[created],
-            CA.[modified],
-            CA.[rule.description],
-            CA.[rule.severity],
-            CA.[rule.id],
-            CA.[rule.actions],
-            CA.[device.id],
-            CA.[device.msg.received]
+            CA.created,
+            CA.modified,
+            CA.ruleDescription,
+            CA.ruleSeverity,
+            CA.ruleId,
+            CA.ruleActions,
+            CA.deviceId,
+            CA.deviceMsgReceived
         INTO
             Actions
         FROM
             CombineAlarms CA PARTITION BY __partitionid
         WHERE
-            CA.[rule.actions] IS NOT NULL"
+            CA.ruleActions IS NOT NULL"
     }
 }
 "@
