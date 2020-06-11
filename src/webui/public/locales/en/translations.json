@@ -920,7 +920,9 @@
                     "fileType": "Invalid file type",
                     "customConfig": "name greater than 50 characters",
                     "invalid": "invalid entry",
-                    "invalidVersion": "Invalid Version"
+                    "invalidVersion": "Invalid Version",
+                    "unsupportedProperty": "Unsupported firmware property used in content.deviceContent",
+                    "unsupportedVersionKey": "Unsupported version key in desired properties"
                 }
             },
             "packageJson":{
