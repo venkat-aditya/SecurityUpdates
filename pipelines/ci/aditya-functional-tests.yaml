@@ -626,6 +626,11 @@ stages:
             displayName: Checkout repository
            # File transform
           # Replace tokens with variable values in XML or JSON configuration files
+
+
+          - script: |-
+              ls -d
+            displayName: Get the Directory Details.   
           - task: FileTransform@1
             displayName: Update app.settings.json file
             inputs:
