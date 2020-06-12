@@ -173,7 +173,7 @@ stages:
               command: push
               tags: |-
                 $(semVer)
-                $(semVerMeta)
+                $(semVerMetaDocker)
 
   - stage: tagRepository
     displayName: Tag repository
