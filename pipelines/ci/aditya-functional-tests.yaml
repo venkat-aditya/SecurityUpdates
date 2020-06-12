@@ -629,6 +629,7 @@ stages:
 
 
           - script: |-
+              pwd
               ls -d
             displayName: Get the Directory Details.   
           - task: FileTransform@1
