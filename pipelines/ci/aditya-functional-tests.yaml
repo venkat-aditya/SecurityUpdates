@@ -627,9 +627,11 @@ stages:
            # File transform
           # Replace tokens with variable values in XML or JSON configuration files
           - task: FileTransform@1
+            displayName: Update app.settings.json file
             inputs:
-              folderPath: '$(System.DefaultWorkingDirectory)/**/appsettings.json'
-              fileType: json 
+              folderPath: '$(System.DefaultWorkingDirectory)/src/appsettings.json'
+              fileType: json
+              targetFiles: src/appsettings.json 
           - task: DotNetCoreCLI@2
             displayName: Run functional tests
             inputs:
