@@ -114,7 +114,7 @@ resources:
       name: MMM/azure-iot-functional-tests
       type: githubenterprise
       endpoint: GithubMMM
-      ref: aarm8zz-userstory-13544
+      ref: master
 stages:
   - stage: build
     displayName: Build
@@ -618,25 +618,18 @@ stages:
         dependsOn:
           - getPipelineVariables
         variables:
-          SerenityBaseUrl: https://ggktech-aks-dev.centralus.cloudapp.azure.com/
+          BaseUrl: https://ggktech-aks-dev.centralus.cloudapp.azure.com/
           AppConfigurationConnectionString: $[dependencies.getPipelineVariables.outputs['getPipelineVariables.appConfigurationConnectionString']]
           SerenityTenantId: $(serenityDevTenantId)
         steps:
           - checkout: azure-iot-functional-tests
             displayName: Checkout repository
-
-          # - task: AzureCLI@2
-          #   displayName: Wait for webui pod to be ready
-          #   name: getPipelineVariables
-          #   inputs:
-          #     azureSubscription: $(subscriptionName)
-          #     scriptType: bash
-          #     scriptLocation: inlineScript
-          #     inlineScript: |-
-          #       set -Eeuxo pipefail
-          #       az aks get-credentials -n $(aksName) -g $(resourceGroupName)
-          #       kubectl wait pods --for=condition=Ready --selector app.kubernetes.io/name=webui -n $(kubernetesNamespace)
-
+           # File transform
+          # Replace tokens with variable values in XML or JSON configuration files
+          - task: FileTransform@1
+            inputs:
+              folderPath: '$(System.DefaultWorkingDirectory)/**/appsettings.json'
+              fileType: json 
           - task: DotNetCoreCLI@2
             displayName: Run functional tests
             inputs:
