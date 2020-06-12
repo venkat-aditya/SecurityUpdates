@@ -629,7 +629,7 @@ stages:
           - task: FileTransform@1
             displayName: Update app.settings.json file
             inputs:
-              folderPath: '$(System.DefaultWorkingDirectory)/src/appsettings.json'
+              folderPath: '$(System.DefaultWorkingDirectory)/MMM/azure-iot-functional-tests/'
               fileType: json
               targetFiles: src/appsettings.json 
           - task: DotNetCoreCLI@2
