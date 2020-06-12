@@ -629,7 +629,7 @@ stages:
 
 
           - script: |-
-              cd .
+              cd s
               pwd
               ls -d
             displayName: Get the Directory Details.   
