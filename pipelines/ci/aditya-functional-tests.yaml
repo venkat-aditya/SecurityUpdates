@@ -4,13 +4,6 @@ pr:
   branches:
     include:
     - master
-schedules:
-  - cron: 0 6 * * *
-    displayName: Daily midnight (CST) build
-    branches:
-      include:
-        - master
-    always: true
 pool:
   vmImage: ubuntu-latest
 variables:
@@ -114,7 +107,7 @@ resources:
       name: MMM/azure-iot-functional-tests
       type: githubenterprise
       endpoint: GithubMMM
-      ref: master
+      ref: seleniumCITest
 stages:
   - stage: build
     displayName: Build
@@ -626,19 +619,13 @@ stages:
             displayName: Checkout repository
            # File transform
           # Replace tokens with variable values in XML or JSON configuration files
-
-
-          - script: |-
-              cd s
-              pwd
-              ls -d
-            displayName: Get the Directory Details.   
-          - task: FileTransform@1
-            displayName: Update app.settings.json file
-            inputs:
-              folderPath: '$(System.DefaultWorkingDirectory)/MMM/azure-iot-functional-tests/'
-              fileType: json
-              targetFiles: src/appsettings.json 
+ 
+          # - task: FileTransform@1
+          #   displayName: Update app.settings.json file
+          #   inputs:
+          #     folderPath: '$(System.DefaultWorkingDirectory)/MMM/azure-iot-functional-tests/'
+          #     fileType: json
+          #     targetFiles: src/appsettings.json 
           - task: DotNetCoreCLI@2
             displayName: Run functional tests
             inputs:
