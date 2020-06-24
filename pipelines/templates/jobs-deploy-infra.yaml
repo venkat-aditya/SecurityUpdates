@@ -686,9 +686,9 @@ jobs:
             jq --arg delim ':' 'reduce (tostream|select(length==2)) as $i ({};
                 .[[$i[0][]|tostring]|join($delim)] = $i[1]
             )' $(System.DefaultWorkingDirectory)/pipelines/cd/app-config-template.json > $(System.DefaultWorkingDirectory)/pipelines/cd/app-config-template-translated.json
-            az appconfig kv export --destination file --format json --path $(System.DefaultWorkingDirectory)/pipelines/cd/app-config-template-exported.json --name $(appConfigurationName)
-            exportedJson=`jq 'keys' app-config-template-exported.json | sed '1d;$d' | sed 's/^ *//g' | sed 's/"//g' | sed 's/,//g'`
-            insertJson=`jq 'keys' app-config-template-translated.json | sed '1d;$d' | sed 's/^ *//g' | sed 's/"//g' | sed 's/,//g'`
+            az appconfig kv export --destination file --format json --path $(System.DefaultWorkingDirectory)/pipelines/cd/app-config-template-exported.json --name $(appConfigurationName) --yes
+            exportedJson=`jq 'keys' $(System.DefaultWorkingDirectory)/pipelines/cd/app-config-template-exported.json | sed '1d;$d' | sed 's/^ *//g' | sed 's/"//g' | sed 's/,//g'`
+            insertJson=`jq 'keys' $(System.DefaultWorkingDirectory)/pipelines/cd/app-config-template-translated.json | sed '1d;$d' | sed 's/^ *//g' | sed 's/"//g' | sed 's/,//g'`
             insertJson="$insertJson
               Global:KeyVault:Name
               Global:ClientAuth:Jwt:AadAppId
