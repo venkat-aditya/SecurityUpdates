@@ -691,22 +691,22 @@ jobs:
             insertJson=`jq 'keys' app-config-template-translated.json | sed '1d;$d' | sed 's/^ *//g' | sed 's/"//g' | sed 's/,//g'`
             insertJson="$insertJson
               Global:KeyVault:Name
-	            Global:ClientAuth:Jwt:AadAppId
+              Global:ClientAuth:Jwt:AadAppId
               Global:AzureActiveDirectory:AppId
-	            Global:AzureActiveDirectory:AppSecret
-	            Global:ResourceGroup
-	            Global:SubscriptionId
-	            Global:StorageAccount:Name
-	            Global:CosmosDb:AccountName
-	            TenantManagerService:EventHubNamespaceName
-	            TenantManagerService:AutomationAccountName
-	            Global:InstrumentationKey
-	            Global:ClientAuth:Jwt:AuthIssuer
-	            TenantManagerService:SetAppConfigEndpoint
-	            TenantManagerService:SetAppConfigFunction
-	            TenantManagerService:TwinChangeFunctionUri
-	            TenantManagerService:TelemetryFunctionUri
-	            TenantManagerService:LifecycleFunctionUri"
+              Global:AzureActiveDirectory:AppSecret
+              Global:ResourceGroup
+              Global:SubscriptionId
+              Global:StorageAccount:Name
+              Global:CosmosDb:AccountName
+              TenantManagerService:EventHubNamespaceName
+              TenantManagerService:AutomationAccountName
+              Global:InstrumentationKey
+              Global:ClientAuth:Jwt:AuthIssuer
+              TenantManagerService:SetAppConfigEndpoint
+              TenantManagerService:SetAppConfigFunction
+              TenantManagerService:TwinChangeFunctionUri
+              TenantManagerService:TelemetryFunctionUri
+              TenantManagerService:LifecycleFunctionUri"
             for i in $exportedJson; do
                 isNotPresent=true
                 for j in $insertJson; do
@@ -716,7 +716,7 @@ jobs:
                 done
                 if $isNotPresent; then
                     echo $i
-				            #az appconfig kv delete --key $i --name $(appConfigurationName) --yes
+                    #az appconfig kv delete --key $i --name $(appConfigurationName) --yes
                 fi
             done
             az appconfig kv import --yes --name $(appConfigurationName) --format json --source file --path "$(System.DefaultWorkingDirectory)/pipelines/cd/app-config-template.json" --separator ":"
