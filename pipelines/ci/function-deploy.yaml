@@ -34,7 +34,7 @@ stages:
     steps:
       - checkout: azure-iot-appconfig-function
         displayName: Checkout repository
-      - template: build.yaml
+      - template: azure-iot-appconfig-function/build.yaml
 
 - stage: DeployGGKDev
   dependsOn:
