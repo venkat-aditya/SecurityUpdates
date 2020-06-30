@@ -1,0 +1,54 @@
+trigger: none
+ # branches:
+ #   include:
+ #     - master
+
+name: AppConfigKey-FunctionApp Deployment
+
+resources:
+  repositories:
+    - repository: azure-iot-appconfig-function
+      name: MMM/azure-iot-appconfig-function
+      type: githubenterprise
+      endpoint: GithubMMM
+      ref: master
+    - repository: azure-iot-messaging-functions
+      name: MMM/azure-iot-messaging-functions
+      type: githubenterprise
+      endpoint: GithubMMM
+      ref: master
+    - repository: azure-iot-alerting-actions-function
+      name: MMM/azure-iot-alerting-actions-function
+      type: githubenterprise
+      endpoint: GithubMMM
+      ref: master
+
+stages:
+- stage: BuildArtifact
+  dependsOn: []
+  displayName: Build and publish code
+  jobs:
+  - job:
+    pool:
+      vmImage: 'VS2017-Win2016'
+    steps:
+      - checkout: azure-iot-appconfig-function
+        displayName: Checkout repository
+      - template: build.yaml
+
+- stage: DeployGGKDev
+  dependsOn:
+  - BuildArtifact
+  displayName: Deploy To GGK Dev Env
+  jobs:
+  - template: approval.yaml
+    parameters:
+      environment: GGK-Environment
+  - job:
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+    - template: code-deploy.yaml
+      parameters:
+        serviceConnection: '3M-CRSLAD16-BBIoTP-DEV'
+        appName: ggktech-appconfigfuncapp-dev
