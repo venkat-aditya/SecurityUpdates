@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft. All rights reserved.
 
 import React, { Component } from "react";
+import { Observable, Subject } from "rxjs";
 import { Trans } from "react-i18next";
-import { Subject } from "rxjs";
 import moment from "moment";
 import {
     Balloon,
@@ -77,6 +77,7 @@ export class DeviceDetails extends Component {
             telemetry: {},
             telemetryIsPending: true,
             telemetryError: null,
+            telemetryQueryExceededLimit: false,
 
             showRawMessage: false,
             currentModuleStatus: undefined,
@@ -130,6 +131,13 @@ export class DeviceDetails extends Component {
                             [deviceId],
                             TimeIntervalDropdown.getTimeIntervalDropdownValue()
                         )
+                            .flatMap((items) => {
+                                this.setState({
+                                    telemetryQueryExceededLimit:
+                                        items.length >= 1000,
+                                });
+                                return Observable.of(items);
+                            })
                             .merge(
                                 this.telemetryRefresh$ // Previous request complete
                                     .delay(
@@ -182,12 +190,12 @@ export class DeviceDetails extends Component {
         } = nextProps;
         let tempState = {};
         /*
-      deviceModuleStatus is a prop fetched by making fetchModules() API call through deviceDetails.container on demand.
-      moduleStatus is a prop sent from deploymentDetailsGrid which it already has in rowData.
-      Both deviceModuleStatus and moduleStatus have the same content,
-        but come from different sources based on the page that opens this flyout.
-      Depending on which one is available, currentModuleStatus is set in component state.
-    */
+            deviceModuleStatus is a prop fetched by making fetchModules() API call through deviceDetails.container on demand.
+            moduleStatus is a prop sent from deploymentDetailsGrid which it already has in rowData.
+            Both deviceModuleStatus and moduleStatus have the same content,
+                but come from different sources based on the page that opens this flyout.
+            Depending on which one is available, currentModuleStatus is set in component state.
+        */
 
         if ((this.props.device || {}).id !== device.id) {
             // Reset state if the device changes.
@@ -384,6 +392,11 @@ export class DeviceDetails extends Component {
                                     )}
                                     <TelemetryChart
                                         className="telemetry-chart"
+                                        t={t}
+                                        limitExceeded={
+                                            this.state
+                                                .telemetryQueryExceededLimit
+                                        }
                                         telemetry={telemetry}
                                         theme={theme}
                                         colors={chartColorObjects}
