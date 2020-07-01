@@ -40,6 +40,7 @@ export const toCreateDeviceGroupRequestModel = (params = {}) => ({
         toDeviceConditionModel(condition)
     ),
     TelemetryFormat: params.telemetryFormat || [],
+    SupportedMethods: params.supportedMethods || []
 });
 
 export const toUpdateDeviceGroupRequestModel = (params = {}) => ({
@@ -50,6 +51,7 @@ export const toUpdateDeviceGroupRequestModel = (params = {}) => ({
         toDeviceConditionModel(condition)
     ),
     TelemetryFormat: params.telemetryFormat || [],
+    SupportedMethods: params.supportedMethods || []
 });
 
 export const prepareLogoResponse = ({ xhr, response }) => {
