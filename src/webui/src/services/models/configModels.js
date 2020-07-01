@@ -19,6 +19,7 @@ export const toDeviceGroupModel = function (deviceGroup = {}) {
         supportedMethods: "supportedMethods",
     });
     deviceGroup["telemetryFormat"] = deviceGroup.telemetryFormat || [];
+    deviceGroup["supportedMethods"] = deviceGroup.supportedMethods || [];
     return deviceGroup;
 };
 
