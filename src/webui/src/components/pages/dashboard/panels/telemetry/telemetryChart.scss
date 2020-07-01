@@ -34,11 +34,28 @@
       display: none;
     }
     h5{
-      margin-right: 0px !important;
+      margin: 0px !important;
     }
     .shown
     {
       height:25px;
     }
   }
+}
+.tsi-legend .tsi-seriesLabel .tsi-splitByContainer .tsi-splitByLabel{
+  align-items: center;
+  display: flex !important;
+}
+
+.tsi-legend:not(.compact).tsi-light .tsi-seriesLabel .tsi-splitByContainer .tsi-splitByLabel .tsi-eyeIcon{
+    position: static;
+    order: 1;
+    margin-left: 10px;
+}
+.tsi-legend .tsi-seriesLabel .tsi-splitByContainer .tsi-splitByLabel .tsi-colorKey{
+  margin-top: 0px;
+  position: static !important;
+}
+div.tsi-legend.tsi-light:not(.compact){
+  width: auto !important;
 }
