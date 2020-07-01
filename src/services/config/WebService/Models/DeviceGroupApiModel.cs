@@ -58,7 +58,7 @@ namespace Mmm.Iot.Config.WebService.Models
                 DisplayName = this.DisplayName,
                 Conditions = this.Conditions,
                 TelemetryFormat = this.TelemetryFormat,
-                SupportedMethods = this.SupportedMethods
+                SupportedMethods = this.SupportedMethods,
             };
         }
     }
