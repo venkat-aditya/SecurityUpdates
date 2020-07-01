@@ -130,7 +130,7 @@ export class DeviceGroupSupportedMethods extends LinkedComponent {
             { error } = this.state,
             // Link these values in render because they need to update based on component state
             methodsLinks = this.methodsLink.getLinkedChildren((methodsLink) => {
-                const key = methodsLink
+                const method = methodsLink
                         .forkTo("method")
                         .check(
                             Validator.notEmpty,
@@ -138,9 +138,9 @@ export class DeviceGroupSupportedMethods extends LinkedComponent {
                                 "deviceGroupsFlyout.supportedMethods.validation.required"
                             )
                         ),
-                    edited = !!key.value,
-                    error = (edited && key.error) || "";
-                return { key, edited, error };
+                    edited = !!method.value,
+                    error = (edited && method.error) || "";
+                return { method, edited, error };
             });
         // editedformat = methodsLinks.filter(({ edited }) => edited);
         // formatHaveErrors = editedformat.some(({ error }) => !!error);
