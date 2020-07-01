@@ -20,6 +20,7 @@ namespace Mmm.Iot.Config.WebService.Models
             this.DisplayName = model.DisplayName;
             this.Conditions = model.Conditions;
             this.TelemetryFormat = model.TelemetryFormat;
+            this.SupportedMethods = model.SupportedMethods;
             this.ETag = model.ETag;
 
             this.Metadata = new Dictionary<string, string>
