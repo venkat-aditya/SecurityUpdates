@@ -26,4 +26,19 @@
 
     .tsi-lineChart { background: transparent; }
   }
+
+  div.tsi-splitByContainer div.tsi-splitByLabel 
+  {
+    margin-right: 0px !important;
+    select {
+      display: none;
+    }
+    h5{
+      margin-right: 0px !important;
+    }
+    .shown
+    {
+      height:25px;
+    }
+  }
 }
