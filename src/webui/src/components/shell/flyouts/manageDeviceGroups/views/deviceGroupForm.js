@@ -146,9 +146,6 @@ class DeviceGroupForm extends LinkedComponent {
                 telemetryFormat: this.state.telemetryFormat.filter(
                     (t) => t.key !== "" || t.displayName !== ""
                 ),
-                supportedMethods: this.state.supportedMethods.filter(
-                    (t) => t.method !== ""
-                ),
                 conditions: this.state.conditions.filter(
                     (condition) => !conditionIsNew(condition)
                 ),
