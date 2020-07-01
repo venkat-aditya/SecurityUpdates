@@ -169,8 +169,8 @@ class DeviceGroupForm extends LinkedComponent {
 
     updateTelemetryFormat = (value) =>
         this.setState({ telemetryFormat: value });
-    updateSupportedMethods = (value) => 
-        this.setState({supportedMethods: value})
+    updateSupportedMethods = (value) =>
+        this.setState({ supportedMethods: value });
     addCondition = () => {
         this.props.logEvent(toDiagnosticsModel("DeviceGroup_AddCondition", {}));
         return this.conditionsLink.set([

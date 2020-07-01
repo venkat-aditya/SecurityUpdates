@@ -148,14 +148,18 @@ export class DeviceGroupSupportedMethods extends LinkedComponent {
         return (
             <Section.Container>
                 <Section.Header>
-                    {t("deviceGroupsFlyout.supportedMethods.supportedMethodHeader")}
+                    {t(
+                        "deviceGroupsFlyout.supportedMethods.supportedMethodHeader"
+                    )}
                 </Section.Header>
                 <Section.Content>
                     <Grid className="data-grid">
                         <GridHeader>
                             <Row>
                                 <Cell className="col-3">
-                                    {t("deviceGroupsFlyout.supportedMethods.methodHeader")}
+                                    {t(
+                                        "deviceGroupsFlyout.supportedMethods.methodHeader"
+                                    )}
                                 </Cell>
                                 <Cell className="col-1"></Cell>
                             </Row>
@@ -200,7 +204,9 @@ export class DeviceGroupSupportedMethods extends LinkedComponent {
 
                             <Row className="action-row">
                                 <Btn svg={svgs.plus} onClick={this.addMethod}>
-                                    {t("deviceGroupsFlyout.supportedMethods.add")}
+                                    {t(
+                                        "deviceGroupsFlyout.supportedMethods.add"
+                                    )}
                                 </Btn>
                             </Row>
                         </GridBody>
