@@ -16,6 +16,7 @@ export const toDeviceGroupModel = function (deviceGroup = {}) {
         conditions: "conditions",
         eTag: "eTag",
         telemetryFormat: "telemetryFormat",
+        supportedMethods: "supportedMethods",
     });
     deviceGroup["telemetryFormat"] = deviceGroup.telemetryFormat || [];
     return deviceGroup;
